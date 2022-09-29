@@ -4,6 +4,7 @@ A API based bot to farm XP and gems on Scriptly Studios
 Several built-in functions which include `ECONOMY_GRINDER` and `BUMP_GRINDER`. The economy grinder grinds MEE6 economy with randomization added to avoid detection. The bump grinder grinds the command `/bump` for Disboard.
 
 **Getting Started**
+<br>
 `$ git clone https://wa1ke3r38552/Scriptly-Grinder`
 Create a client using:
 ```py
