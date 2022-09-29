@@ -6,6 +6,7 @@ Several built-in functions which include `ECONOMY_GRINDER` and `BUMP_GRINDER`. T
 **Getting Started**
 <br>
 `$ git clone https://wa1ke3r38552/Scriptly-Grinder`
+<br>
 Create a client using:
 ```py
 client = MEE6('TOKEN')
