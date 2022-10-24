@@ -29,6 +29,12 @@ class Grinder:
         time.sleep(random.randint(1, 8))
       time.sleep(3600+(random.randint(1, 2)*60))
 
+  def daily(self, client, i):
+    time.sleep(i*self.offset)
+    while True:
+      client.SEND_MESSAGE('!daily', self.channel)
+      time.sleep(86400+(1800*random.randint(1, 2)))
+
   def counting(self, client, i):
     util = autocord.utils(client)
     time.sleep(i)
@@ -57,7 +63,10 @@ class Grinder:
       if self.config['counting']['selection'] is True:
         Thread(target=lambda: self.counting(client, i)).start()
       Thread(target=lambda: self.create_task(client, i)).start()
+      Thread(target=lambda: self.daily(client, i)).start()
 
 grind = Grinder(['jakku', 'trena'], 867990271042916412, counting=True)
 grind.config['counting']['channel'] = 1015923752422346782
 grind.start()
+
+keepAlive()
