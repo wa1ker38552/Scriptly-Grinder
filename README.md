@@ -1,27 +1,17 @@
 # Scriptly-Grinder
-A API based bot to farm XP and gems on Scriptly Studios
+A API based bot to farm XP and gems on Scriptly Studios. The bot has 3 main functions, economy grinder which gets gems from MEE6 by using commands !work and !work claim 24/7, auto-count which can also auto count in the counting channel, and daily which collects MEE6's daily reward. Everything is obviously fully customizable from intervals, to offsets between accounts. The program can also handle multiple tokens at once by initializing several autocord clients. The program is written to avoid as much detection as possible. (Everything is radomized)
 
-Several built-in functions which include `ECONOMY_GRINDER` and `BUMP_GRINDER`. The economy grinder grinds MEE6 economy with randomization added to avoid detection. The bump grinder grinds the command `/bump` for Disboard.
+The Auto XP function can be used although it's pretty obvious that's you're botting if you use it too much so it's disabled by default. It works by sending AI generated responses to messages in #general using the [Kuki API](https://dev.kuki.ai/). To use it, you would need to enter your own API key. (Kuki offers 1000 free responses for a free plan). This reason why this is obvious is the AI will often get confused when hearing random parts of conversations that are already going on and give mediocre responses. The responses from this AI are parsed by putting it into lowercase and simplifying contractions. It also automatically replaces instances of Kuki or kuki with your bot's name.
 
-**Getting Started**
-<br>
-`$ git clone https://wa1ke3r38552/Scriptly-Grinder`
-<br>
-Create a client using:
-```py
-client = MEE6('TOKEN')
-```
-This will initialize your Discord client which the script sends requests from. You can then start the pre-coded functions.
-```py
-# range is the amount of time between messages in commands
-client.ECONOMY_GRINDER(CHANNEL, INTERVAL, [COMMAND1, COMMAND2], range=[1, 5])
-client.BUMP_GRINDER(interval, data_file)
-```
-Since application commands require more data to use than sending regular messages, It is recommended that you have a json file with the application command data for the bot to use. (See examples in `data.json`)
-<br>
-Now that all the basic commands are setup, you can add custom commands using:
-```py
-client.TASK(CHANNEL, {'MESSAGE': TIME}, offset=AMOUNT_TO_WAIT_BEFORE_STARTING)
-```
+**Features:**
+- Auto Economy
+- Auto Counting (default disabled)
+- Auto Daily
+- Auto XP (default disabled)
+- Randomize times
+- Randomize starting offset
+- Handle multiple tokens
 
-Have fun!
+**Note: I rewrote this project completely to be used with the [Autocord](https://github.com/wa1ker38552/autocord)** library that I wrote.
+
+
