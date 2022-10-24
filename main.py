@@ -1,67 +1,63 @@
 from threading import Thread
 from alive import keepAlive
-import requests
+import autocord
 import random
-import string
 import time
-import json
 import os
 
-class MEE6:
-  def __init__(self, token):
-    self.token = token
-    self.client = requests.Session()
-    self.client.headers = {'authorization': self.token, 'content-type': 'application/json'}
 
-    # args
-    self.JSON = None
-    self.STATUS_CODE = None
-    self.TEXT = None
+class Grinder:
+  def __init__(self, tokens: list, channel, offset=1800, counting=False):
+    self.tokens = [os.environ[token] for token in tokens]
+    self.clients = [autocord.client(token) for token in self.tokens]
+    self.offset = offset
+    self.channel = channel
 
-    keepAlive()
+    self.config = {}
+    self.config['counting'] = {
+      'selection': counting,
+      'channel': None,
+      'interval': 60,
+      'randomization': (1, 7)
+    }
 
-  def SEND_MESSAGE(self, message: str, channel: str, return_type=None):
-    request = self.client.post(f'https://discord.com/api/v9/channels/{channel}/messages', json={'content': message})
-    if return_type == self.JSON: return request.json()
-    elif return_type == self.STATUS_CODE: return request.status_code()
-    elif return_type == self.TEXT: return request.text
- 
-  def ECONOMY_GRINDER(self, channel, interval, commands: list, range=[1, 5], type=0):
-    if type == 0:
-      # user initiated
-      Thread(target=lambda: self.ECONOMY_GRINDER(channel, interval, commands, range, type=1)).start()
-    else:
-      # recursively initiated
-      while True:
-        for message in commands:
-          code = self.SEND_MESSAGE(message, channel, return_type=self.STATUS_CODE)
-          if code == 429: os.system('kill 1')
-          time.sleep(random.randint(range[0], range[1]))
-        # sleep an extra 1 or 2 minutes
-        time.sleep(interval+random.randint(1, 2)*60)
+  def create_task(self, client, i):
+    time.sleep(i*self.offset)
+    while True:
+      for message in ['!work claim', '!work']:
+        client.SEND_MESSAGE(message, self.channel)
+        time.sleep(random.randint(1, 8))
+      time.sleep(3600+(random.randint(1, 2)*60))
 
-  def BUMP_GRINDER(self, interval, data_file, type=0):
-    if type == 0:
-      Thread(target=lambda: self.BUMP_GRINDER(interval, data_file, type=1)).start()
-    else:
-      while True:
-        data = json.loads(open(data_file, 'r').read())
-        data["nonce"] = str((int(time.time()) * 1000 - 1420070400000) * 4194304)
-        data["session_id"] = "".join(random.choices(string.ascii_letters + string.digits, k=16))
-        self.client.post('https://discord.com/api/v9/interactions', json=data)
-        time.sleep(60*(120))
+  def counting(self, client, i):
+    util = autocord.utils(client)
+    time.sleep(i)
+    
+    while True:
+      if self.config['counting']['channel'] is None: break
+      history = util.FETCH_MESSAGE_HISTORY(self.config['counting']['channel'], 1)
 
-  def TASK(self, channel, messages: dict, offset=0, type=0):
-    if type == 0:
-      Thread(target=lambda: self.TASK(channel, messages, offset, type=1)).start()
-    else:
-      time.sleep(offset+random.randint(1, 2))
-      while True:
-        for message in messages:
-          code = self.SEND_MESSAGE(message, channel, return_type=self.STATUS_CODE)
-          if code == 429: os.system('kill 1')
-          time.sleep(messages[message])
-        
+      # check if last author was self
+      if history[0].author.id == client.id: pass
+      else:
+        # check if it's a valid number
+        try:
+          current_count = int(history[0].content)
+  
+          # randomizer
+          range = self.config['counting']['randomization']
+          if random.randint(range[0], range[1]) == range[0]:
+            client.SEND_MESSAGE(current_count+1, self.config['counting']['channel'])
+            
+        except ValueError: pass
+      time.sleep(self.config['counting']['interval'])
+  
+  def start(self):
+    for i, client in enumerate(self.clients):
+      if self.config['counting']['selection'] is True:
+        Thread(target=lambda: self.counting(client, i)).start()
+      Thread(target=lambda: self.create_task(client, i)).start()
 
-
-client = MEE6(os.environ['TOKEN'])
+grind = Grinder(['jakku', 'trena'], 867990271042916412, counting=True)
+grind.config['counting']['channel'] = 1015923752422346782
+grind.start()
