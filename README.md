@@ -13,7 +13,7 @@ The Auto XP function can be used although it's pretty obvious that's you're bott
 - Handle multiple tokens
 
 **Setup**
-1. Clone the repository using 'git clone https://wa1ker38552/Scriptly-Grinder'
+1. Clone the repository using `git clone https://wa1ker38552/Scriptly-Grinder`
 2. Put your tokens as individual env variables
 3. Pass the env variable names as lists into the `Grinder()` initialization
 
