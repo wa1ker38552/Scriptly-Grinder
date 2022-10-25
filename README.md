@@ -12,6 +12,11 @@ The Auto XP function can be used although it's pretty obvious that's you're bott
 - Randomize starting offset
 - Handle multiple tokens
 
+**Setup**
+1. Clone the repository using 'git clone https://wa1ker38552/Scriptly-Grinder'
+2. Put your tokens as individual env variables
+3. Pass the env variable names as lists into the `Grinder()` initialization
+
 **Note: I rewrote this project completely to be used with the [Autocord](https://github.com/wa1ker38552/autocord)** library that I wrote.
 
 
