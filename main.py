@@ -113,7 +113,7 @@ class Grinder:
       Thread(target=lambda: self.create_task(client, i)).start()
       Thread(target=lambda: self.daily(client, i)).start()
 
-grind = Grinder(['jakku', 'trena'], 867990271042916412, counting=True)
+grind = Grinder(['', ''], 867990271042916412, counting=True)
 grind.config['counting']['channel'] = 1015923752422346782
 grind.start()
 
